@@ -1,0 +1,15 @@
+{
+  "name": "pfd-parser",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "d3-dsv": "^1.0.3",
+    "pdfjs-dist": "^1.6.483"
+  }
+}

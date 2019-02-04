@@ -1,0 +1,5 @@
+node_modules
+test/data/**/*.pdf
+test/data/**/*.csv
+!test/data/**/Kushner, Jared.pdf
+.DS_Store
