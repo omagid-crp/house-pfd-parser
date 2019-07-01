@@ -10,6 +10,8 @@
   "license": "MIT",
   "dependencies": {
     "d3-dsv": "^1.0.3",
+    "lodash": "^4.17.11",
+    "package.json": "^2.0.1",
     "pdfjs-dist": "^1.6.483"
   }
 }
