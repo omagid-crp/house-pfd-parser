@@ -13,7 +13,7 @@ var pdfjsLib = require('pdfjs-dist')
 
 let skipHeaders = {}
 
-function processFiling(pdfPath, outPath) {
+function processFiling(pdfPath, outPath, noContentPath) {
 	const data = new Uint8Array(fs.readFileSync(pdfPath))
 	const tables = []
 
@@ -38,6 +38,9 @@ function processFiling(pdfPath, outPath) {
 								if (!ignoreRest) {
 									const noContentCSV = `${outPath}no-content.csv`
 									fs.appendFileSync(noContentCSV, `${pdfPath}\n`)
+									const pathParts = pdfPath.split('/')
+									const newPath = noContentPath + pathParts[pathParts.length - 1]
+									fs.rename(pdfPath, newPath)
 									ignoreRest = true
 								}
 							} else {
@@ -234,7 +237,7 @@ function processFiling(pdfPath, outPath) {
 		})
 }
 
-const run = (filePath, outPath) => {
+const run = (filePath, outPath, noContentPath) => {
 	const noContentCSV = `${outPath}no-content.csv`
 	fs.appendFileSync(noContentCSV, `File\n`)
 
@@ -242,7 +245,10 @@ const run = (filePath, outPath) => {
 
 	let filingPromise = processFiling(filePath + files[0], outPath)
 	for (let pos = 1; pos < files.length; pos++) {
-		filingPromise = filingPromise.then(processFiling.bind(null, filePath + files[pos], outPath), console.log)
+		filingPromise = filingPromise.then(
+			processFiling.bind(null, filePath + files[pos], outPath, noContentPath),
+			console.log
+		)
 	}
 	filingPromise.then(() => {
 		console.log('done')
@@ -251,5 +257,9 @@ const run = (filePath, outPath) => {
 
 ;(() => {
 	process.argv
-	run(process.argv[2] || `${__dirname}/data/input/`, process.argv[3] || `${__dirname}/data/output/`)
+	run(
+		process.argv[2] || `${__dirname}/data/input/`,
+		process.argv[3] || `${__dirname}/data/output/`,
+		process.argv[4] || `${__dirname}/data/no_content/`
+	)
 })()
