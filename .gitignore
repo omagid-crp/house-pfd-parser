@@ -94,3 +94,6 @@ typings/
 
 # Data directory
 /data
+
+# Node Modules
+/node_modules
