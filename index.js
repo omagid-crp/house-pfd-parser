@@ -1,15 +1,17 @@
 // jshint esnext:true
 // Started as a PDF.js example file, originally licensed public domain
 
-var fs = require('fs'),
+const fs = require('fs'),
 	util = require('util'),
 	dsv = require('d3-dsv'),
 	path = require('path'),
 	_ = require('lodash')
 
+const postProcess = require('./lib/postProcess')
+
 global.DOMParser = require('./lib/domparsermock.js').DOMParserMock
 
-var pdfjsLib = require('pdfjs-dist')
+const pdfjsLib = require('pdfjs-dist')
 
 let skipHeaders = {}
 
@@ -40,7 +42,13 @@ function processFiling(pdfPath, outPath, noContentPath) {
 									fs.appendFileSync(noContentCSV, `${pdfPath}\n`)
 									const pathParts = pdfPath.split('/')
 									const newPath = noContentPath + pathParts[pathParts.length - 1]
-									fs.rename(pdfPath, newPath)
+									fs.rename(pdfPath, newPath, err => {
+										if (err) {
+											console.log(err)
+										} else {
+											console.log("Successfully moved file to 'no_content' directory")
+										}
+									})
 									ignoreRest = true
 								}
 							} else {
@@ -252,6 +260,7 @@ const run = (filePath, outPath, noContentPath) => {
 	}
 	filingPromise.then(() => {
 		console.log('done')
+		postProcess(outPath)
 	})
 }
 
