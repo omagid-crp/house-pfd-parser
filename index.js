@@ -9,7 +9,7 @@ const pdfjsLib = require('pdfjs-dist')
 const createTables = require('./createTables')
 const parsePage = require('./parsePage')
 
-let skipHeaders = {}
+const skipHeaders = {}
 
 function processFiling(pdfPath, outPath, noContentPath) {
 	const data = new Uint8Array(fs.readFileSync(pdfPath))

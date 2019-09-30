@@ -21,13 +21,13 @@ const parsePage = (pageNum, doc, ignoreRest, tables) =>
 						ignoreRest = true
 					}
 				} else {
-					let itemsGroupedByYPos = _.groupBy(content.items, item => {
+					const itemsGroupedByYPos = _.groupBy(content.items, item => {
 						let itemY = item.transform[5]
 						return itemY
 					})
 					let rowY = 0
 
-					let yPositions = Object.keys(itemsGroupedByYPos)
+					const yPositions = Object.keys(itemsGroupedByYPos)
 						.sort((a, b) => {
 							return a - b
 						})
@@ -37,7 +37,7 @@ const parsePage = (pageNum, doc, ignoreRest, tables) =>
 						let yPos = yPositions[i]
 
 						// Sort each row of items by X position
-						let items = itemsGroupedByYPos[yPos].sort((a, b) => {
+						const items = itemsGroupedByYPos[yPos].sort((a, b) => {
 							return a.transform[4] - b.transform[4]
 						})
 
@@ -57,8 +57,8 @@ const parsePage = (pageNum, doc, ignoreRest, tables) =>
 									break
 								}
 
-								let part = string.split(': ')[0]
-								let name = string.split(': ')[1] ? string.split(': ')[1] : part
+								const part = string.split(': ')[0]
+								const name = string.split(': ')[1] ? string.split(': ')[1] : part
 
 								tables.push({
 									part,
@@ -70,11 +70,11 @@ const parsePage = (pageNum, doc, ignoreRest, tables) =>
 								const currTable = tables[tables.length - 1]
 
 								items.forEach(item => {
-									let itemX = item.transform[4]
-									let itemY = item.transform[5]
+									const itemX = item.transform[4]
+									const itemY = item.transform[5]
 									if (currTable) {
-										let mysteryItemAttribute = item.transform[0]
-										if (mysteryItemAttribute == 9.75) {
+										const importantAttribute = item.transform[0]
+										if (importantAttribute == 9.75) {
 											let append = true
 
 											currTable.cols.forEach(col => {
@@ -107,7 +107,7 @@ const parsePage = (pageNum, doc, ignoreRest, tables) =>
 												}
 											}
 										} else {
-											if (mysteryItemAttribute >= 9) {
+											if (importantAttribute >= 9) {
 												currTable.cols.forEach((col, i2) => {
 													if (col.x == itemX) {
 														if (i2 > 0 && Math.abs(itemY - rowY) > 12) {
